@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("HELLO\n${widget.name}",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold),),
+                  Text("HELLO\n${widget.name.toUpperCase()}",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Text("Good Morning",style: TextStyle(color: Colors.white70,fontSize: 22,fontWeight: FontWeight.w400),),
                   SizedBox(height: 10,),
