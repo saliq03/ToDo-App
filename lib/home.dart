@@ -4,6 +4,9 @@ import 'package:taskly/widgets/materialtab.dart';
 
 
 class Home extends StatefulWidget {
+  final String name;
+
+  const Home({required this.name});
   @override
   State<Home> createState() => _HomeState();
 }
@@ -11,6 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool today=true,tommorrow=false,nextweek=false;
   TextEditingController addworkController=TextEditingController();
+  bool chekboxValue=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +32,7 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("HELLO\nSALIQ",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold),),
+                  Text("HELLO\n${widget.name}",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Text("Good Morning",style: TextStyle(color: Colors.white70,fontSize: 22,fontWeight: FontWeight.w400),),
                   SizedBox(height: 10,),
@@ -55,7 +59,16 @@ class _HomeState extends State<Home> {
                    },child: MyTab(title: "Next Week")),
                // Text("Next Week",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)
              ],
-           )
+           ),
+            SizedBox(height: 20,),
+            CheckboxListTile(
+              activeColor: Color(0xFF035A69),
+                title: Text("Go to Gym",style: TextStyle(color: Colors.white,fontSize: 20),),
+                value: chekboxValue, onChanged: (newValue){
+              setState(() {
+                chekboxValue=newValue!;});},
+            controlAffinity: ListTileControlAffinity.leading,
+            )
           ],
         ),
       ),
