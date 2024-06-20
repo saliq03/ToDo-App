@@ -17,7 +17,7 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-        Timer(Duration(seconds: 2),(){
+        Timer(Duration(seconds: 1),(){
           Navigate();
         });
   }
@@ -28,7 +28,7 @@ class SplashScreenState extends State<SplashScreen> {
         color: Colors.white,
         child: Center(
           child: SizedBox(width: 250,
-              child: Image.asset("assets/images/splashlogo.png",)),
+              child: Image.asset("assets/icons/splashlogo.png",)),
         ),
       ),
     );
