@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskly/home.dart';
+import 'package:taskly/splash_screen.dart';
 
 class Name extends StatelessWidget {
 
@@ -28,9 +30,15 @@ class Name extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               GestureDetector(
-                onTap:(){
+                onTap:() async {
                   String name=nameController.text.toString();
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home(name: name)));
+                  if(String!=''){
+                    var pref= await SharedPreferences.getInstance();
+                    pref.setBool(SplashScreenState.nameScreenKey, true);
+                    pref.setString(SplashScreenState.nameKey, name);
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home(name: name)));
+                  }
+
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 30,vertical: 3),

@@ -64,7 +64,8 @@ class _HomeState extends State<Home> {
             CheckboxListTile(
               activeColor: Color(0xFF035A69),
                 title: Text("Go to Gym",style: TextStyle(color: Colors.white,fontSize: 20),),
-                value: chekboxValue, onChanged: (newValue){
+                value: chekboxValue,
+               onChanged: (newValue){
               setState(() {
                 chekboxValue=newValue!;});},
             controlAffinity: ListTileControlAffinity.leading,

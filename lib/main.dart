@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskly/home.dart';
 import 'package:taskly/name.dart';
+import 'package:taskly/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Name(),
+      home: SplashScreen(),
     );
   }
 }
