@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 import 'package:taskly/widgets/materialtab.dart';
+
+import 'database/database.dart';
 
 
 class Home extends StatefulWidget {
@@ -14,7 +17,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool today=true,tommorrow=false,nextweek=false;
   TextEditingController addworkController=TextEditingController();
-  bool chekboxValue=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,15 +63,10 @@ class _HomeState extends State<Home> {
              ],
            ),
             SizedBox(height: 20,),
-            CheckboxListTile(
-              activeColor: Color(0xFF035A69),
-                title: Text("Go to Gym",style: TextStyle(color: Colors.white,fontSize: 20),),
-                value: chekboxValue,
-               onChanged: (newValue){
-              setState(() {
-                chekboxValue=newValue!;});},
-            controlAffinity: ListTileControlAffinity.leading,
-            )
+            today?
+            MystreamBuilder(day: "Today"):
+            tommorrow? MystreamBuilder(day: "Tomorrow"):
+            MystreamBuilder(day: "NextWeek"),
           ],
         ),
       ),
@@ -114,6 +111,12 @@ class _HomeState extends State<Home> {
             SizedBox(height: 20,),
             GestureDetector(
               onTap:(){
+                String id=randomAlphaNumeric(10);
+                String work=addworkController.text.toString();
+
+                today? DatabaseMethods().addTodayWork(work, id):
+                tommorrow?DatabaseMethods().addTomorrowWork(work, id):
+                DatabaseMethods().addNextweekWork(work, id);
                 Navigator.pop(context);
               },
               child: Container(
@@ -129,4 +132,5 @@ class _HomeState extends State<Home> {
       );
     });
   }
+
 }
