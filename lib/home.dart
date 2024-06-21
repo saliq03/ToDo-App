@@ -114,9 +114,9 @@ class _HomeState extends State<Home> {
                 String id=randomAlphaNumeric(10);
                 String work=addworkController.text.toString();
 
-                today? DatabaseMethods().addTodayWork(work, id):
-                tommorrow?DatabaseMethods().addTomorrowWork(work, id):
-                DatabaseMethods().addNextweekWork(work, id);
+                today? DatabaseMethods().addTodayWork(work, id,false):
+                tommorrow?DatabaseMethods().addTomorrowWork(work, id,false):
+                DatabaseMethods().addNextweekWork(work, id,false);
                 Navigator.pop(context);
               },
               child: Container(

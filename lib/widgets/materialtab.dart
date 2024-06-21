@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/database/database.dart';
 
 class MaterialTab extends StatelessWidget {
   final String title;
@@ -41,7 +42,7 @@ class MystreamBuilder extends StatefulWidget {
 }
 
 class MystreamBuilderState extends State<MystreamBuilder> {
-  bool chekboxValue=false;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -53,9 +54,11 @@ class MystreamBuilderState extends State<MystreamBuilder> {
                 if(snapshot.hasData){
                   return ListView.builder(itemBuilder: (context,index){
                     return ListTile(
-                      // leading: CircleAvatar(child: Text("${index+1}"),),
-                        leading: Checkbox(value: chekboxValue,onChanged: (newval){
-                          chekboxValue=newval!;
+
+                        leading: Checkbox(
+                          value: snapshot.data!.docs[index]["Done"],
+                          onChanged: (newval){
+                          DatabaseMethods().updateIfTicked(widget.day,snapshot.data!.docs[index]["Id"]);
                           setState(() {});
                         },),
                         title: Text("${snapshot.data!.docs[index]["Work"]}"),
