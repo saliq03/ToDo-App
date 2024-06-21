@@ -56,14 +56,17 @@ class MystreamBuilderState extends State<MystreamBuilder> {
                     return ListTile(
 
                         leading: Checkbox(
+                          activeColor: Color(0xFF46CDCF),
                           value: snapshot.data!.docs[index]["Done"],
-                          onChanged: (newval){
-                          DatabaseMethods().updateIfTicked(widget.day,snapshot.data!.docs[index]["Id"]);
+                          onChanged: (newval) async {
+                          await DatabaseMethods().updateIfTicked(widget.day,snapshot.data!.docs[index]["Id"]);
                           setState(() {});
                         },),
-                        title: Text("${snapshot.data!.docs[index]["Work"]}"),
+                        title: Text("${snapshot.data!.docs[index]["Work"]}",style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.w400),),
                         trailing: IconButton(icon: Icon(Icons.delete,color: Colors.white,),
-                          onPressed: () {  },)
+                          onPressed: () async {
+                          await DatabaseMethods().deleteWork(widget.day, snapshot.data!.docs[index]["Id"]);
+                          },)
                     );
                   },
                     itemCount:snapshot.data!.docs.length,

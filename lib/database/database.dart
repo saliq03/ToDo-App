@@ -28,4 +28,9 @@ class DatabaseMethods{
   Future updateIfTicked(String day,String id)async{
     return await FirebaseFirestore.instance.collection(day).doc(id).update({"Done": true});
   }
+
+  Future deleteWork(String day,String id)async{
+    return await FirebaseFirestore.instance.collection(day).doc(id).delete();
+  }
+
 }
