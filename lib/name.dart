@@ -8,6 +8,7 @@ class Name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController nameController=TextEditingController();
+    TextEditingController emailController=TextEditingController();
     return Scaffold(
       body: Container(
         child: Center(
@@ -25,6 +26,20 @@ class Name extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(11)
                     )
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 30,right: 30,top: 20),
+                child: TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                      hintText: "Enter Email",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(11)
+                      )
                   ),
                 ),
               ),
