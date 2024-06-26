@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskly/database/database.dart';
+
+import '../splash_screen.dart';
 
 class MaterialTab extends StatelessWidget {
   final String title;
@@ -42,13 +45,18 @@ class MystreamBuilder extends StatefulWidget {
 }
 
 class MystreamBuilderState extends State<MystreamBuilder> {
-
+  String? Uid;
+  @override
+  void initState() {
+    super.initState();
+    getUid();
+  }
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection(widget.day).snapshots(),
+            stream: FirebaseFirestore.instance.collection("Users").doc(Uid).collection(widget.day).snapshots(),
             builder: (context,snapshot){
               if(snapshot.connectionState==ConnectionState.active){
                 if(snapshot.hasData){
@@ -59,13 +67,13 @@ class MystreamBuilderState extends State<MystreamBuilder> {
                           activeColor: Color(0xFF46CDCF),
                           value: snapshot.data!.docs[index]["Done"],
                           onChanged: (newval) async {
-                          await DatabaseMethods().updateIfTicked(widget.day,snapshot.data!.docs[index]["Id"]);
+                          await DatabaseMethods().updateIfTicked(widget.day,snapshot.data!.docs[index]["Id"],Uid!);
                           setState(() {});
                         },),
                         title: Text("${snapshot.data!.docs[index]["Work"]}",style: TextStyle(color: Colors.white,fontSize: 22,fontWeight: FontWeight.w400),),
                         trailing: IconButton(icon: Icon(Icons.delete,color: Colors.white,),
                           onPressed: () async {
-                          await DatabaseMethods().deleteWork(widget.day, snapshot.data!.docs[index]["Id"]);
+                          await DatabaseMethods().deleteWork(widget.day, snapshot.data!.docs[index]["Id"],Uid!);
                           },)
                     );
                   },
@@ -86,6 +94,11 @@ class MystreamBuilderState extends State<MystreamBuilder> {
         ),
       ),
     );
+  }
+
+  Future<void> getUid() async {
+    var pref= await SharedPreferences.getInstance();
+    Uid=pref.getString(SplashScreenState.phoneKey);
   }
 }
 

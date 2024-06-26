@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskly/splash_screen.dart';
 import 'package:taskly/widgets/materialtab.dart';
 
 import 'database/database.dart';
@@ -125,13 +127,15 @@ class _HomeState extends State<Home> {
             ),
             SizedBox(height: 20,),
             GestureDetector(
-              onTap:(){
+              onTap:() async {
+                var pref= await SharedPreferences.getInstance();
+                String? Uid=pref.getString(SplashScreenState.phoneKey);
                 String id=randomAlphaNumeric(10);
                 String work=addworkController.text.toString();
 
-                today? DatabaseMethods().addTodayWork(work, id,false):
-                tommorrow?DatabaseMethods().addTomorrowWork(work, id,false):
-                DatabaseMethods().addNextweekWork(work, id,false);
+                today? DatabaseMethods().addTodayWork(work, id,false,Uid!):
+                tommorrow?DatabaseMethods().addTomorrowWork(work, id,false,Uid!):
+                DatabaseMethods().addNextweekWork(work, id,false,Uid!);
                 Navigator.pop(context);
               },
               child: Container(

@@ -14,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   static const String nameScreenKey="nameScreenKey";
   static const String nameKey="nameKey";
-  static const String phoneKey="nameKey";
+  static const String phoneKey="phoneKey";
 
   @override
   void initState() {
