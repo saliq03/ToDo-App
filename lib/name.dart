@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taskly/home.dart';
+import 'package:taskly/otpscreen.dart';
 import 'package:taskly/splash_screen.dart';
 
 class Name extends StatelessWidget {
@@ -8,7 +9,7 @@ class Name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController nameController=TextEditingController();
-    TextEditingController emailController=TextEditingController();
+    TextEditingController phoneController=TextEditingController();
     return Scaffold(
       body: Container(
         child: Center(
@@ -34,9 +35,9 @@ class Name extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 30,right: 30,top: 20),
                 child: TextField(
-                  controller: emailController,
+                  controller: phoneController,
                   decoration: InputDecoration(
-                      hintText: "Enter Email",
+                      hintText: "Enter Mobile Number",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(11)
                       )
@@ -47,11 +48,20 @@ class Name extends StatelessWidget {
               GestureDetector(
                 onTap:() async {
                   String name=nameController.text.toString();
-                  if(String!=''){
+                  String phone=phoneController.text.toString();
+                  if(name!=''&& phone!=''){
                     var pref= await SharedPreferences.getInstance();
-                    pref.setBool(SplashScreenState.nameScreenKey, true);
                     pref.setString(SplashScreenState.nameKey, name);
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home(name: name)));
+                    pref.setString(SplashScreenState.phoneKey, phone);
+                    await FirebaseAuth.instance.verifyPhoneNumber(
+                        verificationCompleted: (PhoneAuthCredential credential){},
+                        verificationFailed: (FirebaseException ex){},
+                        codeSent: (String verificationid,int? resendtoken){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Otpscreencreen(verificationID: verificationid,)));
+                        },
+                        codeAutoRetrievalTimeout: (String verificationid){},
+                        phoneNumber: phoneController.text.toString());
+
                   }
 
                 },
