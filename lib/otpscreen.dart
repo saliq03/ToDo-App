@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskly/splash_screen.dart';
-
+import 'package:pinput/pinput.dart';
 import 'home.dart';
 
 class Otpscreencreen extends StatefulWidget {
@@ -15,6 +15,7 @@ final String verificationID;
 }
 
 class _OtpScreencreenState extends State<Otpscreencreen> {
+  var code='';
   @override
   Widget build(BuildContext context) {
     TextEditingController otpController=TextEditingController();
@@ -30,15 +31,16 @@ class _OtpScreencreenState extends State<Otpscreencreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: TextField(
-              controller: otpController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                  hintText: "Enter OTP",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20)
-                  )),
-            ),
+             child:TextCode(),
+            // TextField(
+            //   controller: otpController,
+            //   keyboardType: TextInputType.phone,
+            //   decoration: InputDecoration(
+            //       hintText: "Enter OTP",
+            //       border: OutlineInputBorder(
+            //           borderRadius: BorderRadius.circular(20)
+            //       )),
+            // ),
           ),
           SizedBox(height: 40,),
           ElevatedButton(onPressed: ()async{
@@ -47,7 +49,7 @@ class _OtpScreencreenState extends State<Otpscreencreen> {
             try{
               PhoneAuthCredential credential= await PhoneAuthProvider.credential(
                   verificationId: widget.verificationID,
-                  smsCode: otpController.text.toString());
+                  smsCode: code);
               FirebaseAuth.instance.signInWithCredential(credential).then((onValue){
                 pref.setBool(SplashScreenState.nameScreenKey, true);
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home(name: name!)));
@@ -56,11 +58,20 @@ class _OtpScreencreenState extends State<Otpscreencreen> {
             catch(ex){
               print('Exception: ${ex.toString()}');
             }
-
-
-
           }, child: Text("Verify OTP"))
         ],
+      ),
+    );
+  }
+  TextCode(){
+    return Center(
+      child: Pinput(
+        length: 6,
+        onChanged: (value){
+          setState(() {
+            code=value;
+          });
+        },
       ),
     );
   }

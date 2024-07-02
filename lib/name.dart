@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskly/otpscreen.dart';
 import 'package:taskly/splash_screen.dart';
+import 'package:get/get.dart';
 
 class Name extends StatelessWidget {
 
@@ -53,14 +54,17 @@ class Name extends StatelessWidget {
                     var pref= await SharedPreferences.getInstance();
                     pref.setString(SplashScreenState.nameKey, name);
                     pref.setString(SplashScreenState.phoneKey, phone);
+
                     await FirebaseAuth.instance.verifyPhoneNumber(
                         verificationCompleted: (PhoneAuthCredential credential){},
-                        verificationFailed: (FirebaseException ex){},
+                        verificationFailed: (FirebaseException ex){
+                          Get.snackbar('Error occured', ex.code);
+                        },
                         codeSent: (String verificationid,int? resendtoken){
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>Otpscreencreen(verificationID: verificationid,)));
                         },
                         codeAutoRetrievalTimeout: (String verificationid){},
-                        phoneNumber: phoneController.text.toString());
+                        phoneNumber: '+91'+phoneController.text);
 
                   }
 
